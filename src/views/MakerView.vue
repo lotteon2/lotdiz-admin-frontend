@@ -1,14 +1,33 @@
 <template>
-  <div class="member">
-    <h1>메이커 페이지</h1>
-    <h2>메이커 정보 조회</h2>
-    <li v-for="maker in getMakerResponseDtos" :key="maker.makerId">
-      {{ maker }}
-    </li>
-    <h2>메이커 정보 검색</h2>
-    <li v-for="maker in getMakerSearchResponseDtos" :key="maker.makerId">
-      {{ maker }}
-    </li>
+  <div class="info">
+    <div class="condition">
+      <div class="search">
+      </div>
+      <div class="sort">
+        <div class="sort-createdAt"><a href="">등록일순</a></div>
+        <div class="sort-name"><a href="">이름순</a></div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <th>이름</th>
+        <th>문의 이메일</th>
+        <th>문의 전화번호</th>
+        <th>카카오톡 URL</th>
+        <th>홈페이지 URL</th>
+        <th>SNS URL</th>
+        <th>등록일</th>
+      </thead>
+      <tbody v-for="maker in getMakerResponseDtos" :key="maker.makerId">
+        <td>{{ maker.makerName }}</td>
+        <td>{{ maker.makerEmail }}</td>
+        <td>{{ maker.makerPhoneNumber }}</td>
+        <td>{{ maker.makerKakaoUrl }}</td>
+        <td>{{ maker.makerHomeUrl }}</td>
+        <td>{{ maker.makerSnsUrl }}</td>
+        <td>{{ maker.createdAt }}</td>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -45,4 +64,7 @@
 </script>
   
 <style>
+@import "../assets/css/info.css";
+@import "../assets/css/conditionbar.css";
+@import "../assets/css/tableview.css";
 </style>

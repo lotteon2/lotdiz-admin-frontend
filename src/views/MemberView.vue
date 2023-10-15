@@ -1,14 +1,27 @@
 <template>
-  <div class="member">
-    <h1>회원 페이지</h1>
-    <h2>회원 정보 조회</h2>
-    <li v-for="member in getMemberResponseDtos" :key="member.memberId">
-      {{ member }}
-    </li>
-    <h2>회원 정보 검색</h2>
-    <li v-for="member in getMemberSearchResponseDtos" :key="member.memberId">
-      {{ member }}
-    </li>
+  <div class="info">
+    <div class="condition">
+      <div class="search">
+      </div>
+      <div class="sort">
+        <div class="sort-createdAt"><a href="">등록일순</a></div>
+        <div class="sort-name"><a href="">이름순</a></div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>전화번호</th>
+        <th>등록일</th>
+      </thead>
+      <tbody v-for="member in getMemberResponseDtos" :key="member.memberId">
+        <td>{{ member.memberName }}</td>
+        <td>{{ member.memberEmail }}</td>
+        <td>{{ member.memberPhoneNumber }}</td>
+        <td>{{ member.createdAt }}</td>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -45,4 +58,7 @@
 </script>
   
 <style>
+@import "../assets/css/info.css";
+@import "../assets/css/conditionbar.css";
+@import "../assets/css/tableview.css";
 </style>

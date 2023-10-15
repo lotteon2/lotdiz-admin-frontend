@@ -4,11 +4,16 @@ import NavBar from '@/common/NavBar.vue';
 </script>
 
 <template>
-  <header>
-    <NavBar />
-  </header>
-  <div>
-    <RouterView />
+  <div class="container">
+    <header>
+      <NavBar />
+    </header>
+    <div>
+      <RouterView />
+    </div>
   </div>
- 
 </template>
+
+<style scoped>
+@import "./assets/css/main.css";
+</style>

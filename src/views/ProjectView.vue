@@ -1,11 +1,33 @@
 <template>
-  <div class="member">
-    <h1>프로젝트 페이지</h1>
-    <h2>프로젝트 정보 조회</h2>
-    <li v-for="project in getProjectResponseDtos" :key="project.projectId">
-      {{ project }}
-    </li>
-    <h2>프로젝트 인증</h2>
+  <div class="info">
+    <div class="condition">
+      <div class="search">
+      </div>
+      <div class="sort">
+        <div class="sort-createdAt"><a href="">등록일순</a></div>
+        <div class="sort-name"><a href="">이름순</a></div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <th></th>
+        <th>프로젝트명</th>
+        <th>카테고리</th>
+        <th>메이커명</th>
+        <th>남은 기간</th>
+        <th>인증 상태</th>
+        <th>등록일</th>
+      </thead>
+      <tbody v-for="project in getProjectResponseDtos" :key="project.projectId">
+        <td></td>
+        <td>{{ project.projectName }}</td>
+        <td>{{ project.categoryName }}</td>
+        <td>{{ project.makerName }}</td>
+        <td>{{ project.projectDueDate }}</td>
+        <td>{{ project.projectIsAuthorized }}</td>
+        <td>{{ project.createdAt }}</td>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -30,4 +52,7 @@
 </script>
   
 <style>
+@import "../assets/css/info.css";
+@import "../assets/css/conditionbar.css";
+@import "../assets/css/tableview.css";
 </style>
