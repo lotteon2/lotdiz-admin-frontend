@@ -1,13 +1,14 @@
 .condition {
     display: flex;
     align-items: flex-end;
+    width: 600px;
+    height: 40px;
     gap: 20px;
 }
 
 .search {
     display: flex;
-    width: 594px;
-    height: 45px;
+    width: 70%;
     justify-content: center;
     align-items: center;
     flex: 1 0 0;
@@ -20,34 +21,19 @@
 
 .sort {
     display: flex;
-    width: 286px;
+    width: 200px;
     justify-content: center;
     align-items: center;
     gap: 20px;
     align-self: stretch;
 }
 
-.sort-createdAt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex: 1 0 0;
-    align-self: stretch;
-
-    border-radius: 5px;
-    border: 1px solid #696CFF;
-
-    color: #696CFF;
-    text-align: center;
-    font-family: Open Sans;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
+a {
+    color: #7C7C7C;
+    text-decoration: none;
 }
 
-.sort-name {
+.sort-option {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,8 +47,17 @@
     color: #7C7C7C;
     text-align: center;
     font-family: Open Sans;
-    font-size: 20px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
+}
+
+.selected * {
+    color: #696CFF;
+    font-weight: 700;
+}
+
+.sort-option.selected {
+    border: 1px solid #696CFF;
 }

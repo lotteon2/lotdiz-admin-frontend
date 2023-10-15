@@ -4,8 +4,13 @@
       <div class="search">
       </div>
       <div class="sort">
-        <div class="sort-createdAt"><a href="">등록일순</a></div>
-        <div class="sort-name"><a href="">이름순</a></div>
+        <div 
+          class="sort-option" 
+          v-for="sortOption in sortOptions" 
+          :key="sortOption.value" 
+          :class="{ 'selected': requestedSort === sortOption.value }">
+          <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
+        </div>
       </div>
     </div>
     <table>
@@ -33,33 +38,52 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { getMakers, getMakerSearchResult } from '@/services/maker/MakerAPIService';
-  import type { GetMakerResponseDto, GetMakerSearchResponseDto } from '@/services/maker/MakerDto';
+  import { getMakers } from '@/services/maker/MakerAPIService';
+  import type { GetMakerResponseDto } from '@/services/maker/MakerDto';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getMakerResponseDtos = ref<GetMakerResponseDto[]>([]);
-  const getMakerSearchResponseDtos = ref<GetMakerSearchResponseDto[]>([]);
 
-  // 회원 정보 조회
+  const sortOptions = [
+    { label: '등록일순', value: 'createdAt,desc' },
+    { label: '이름순', value: 'memberName,desc' },
+  ];
+
+  // default pagenation 값 세팅
+  const requestedSort = ref<string>(sortOptions[0].value);
+  const requestedPage = ref<number>(0);
+  const requestedSize = ref<number>(20);
+
   // 컴포넌트가 마운트 된 후 API 호출
   onMounted(async () => {
-    try {
-      const response: Array<GetMakerResponseDto> = await getMakers(0, 20, "createdAt,desc");
-      getMakerResponseDtos.value = response;
-    } catch (error) {
-      console.error('Error fetching members:', error);
-    }
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const page: number = Number(urlSearchParams.get("page")) || 0;
+    const size: number = Number(urlSearchParams.get("size")) || 20;
+    const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
+
+    // 메이커 정보 조회
+    const response: Array<GetMakerResponseDto> = await getMakers(page, size, sort);
+    getMakerResponseDtos.value = response;
   });
 
-  // 회원 정보 검색
-  onMounted(async () => {
+  // 정렬기준 업데이트 함수
+  const changeSort = async (sort: string) => {
     try {
-      const response: Array<GetMakerSearchResponseDto> = await getMakerSearchResult("이우엽", 0, 20, "createdAt,desc");
-      getMakerSearchResponseDtos.value = response;
+      requestedSort.value = sort;
+      // 회원 정보 조회
+      const response: Array<GetMakerResponseDto> = await getMakers(
+        requestedPage.value, requestedSize.value, sort);
+      getMakerResponseDtos.value = response;
+
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      urlSearchParams.set("sort", sort);
+
+      const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+      history.pushState(null, '', newUrl);
     } catch (error) {
-      console.error('Error fetching members:', error);
+      console.error('Error fetching makers:', error);
     }
-  });
+  };
 
 </script>
   

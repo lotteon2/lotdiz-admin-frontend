@@ -4,8 +4,13 @@
       <div class="search">
       </div>
       <div class="sort">
-        <div class="sort-createdAt"><a href="">등록일순</a></div>
-        <div class="sort-name"><a href="">이름순</a></div>
+        <div 
+          class="sort-option" 
+          v-for="sortOption in sortOptions" 
+          :key="sortOption.value" 
+          :class="{ 'selected': requestedSort === sortOption.value }">
+          <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
+        </div>
       </div>
     </div>
     <table>
@@ -27,33 +32,52 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { getMembers, getMemberSearchResult } from '@/services/member/MemberAPIService';
-  import type { GetMemberResponseDto, GetMemberSearchResponseDto } from '@/services/member/MemberDto';
+  import { getMembers } from '@/services/member/MemberAPIService';
+  import type { GetMemberResponseDto } from '@/services/member/MemberDto';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getMemberResponseDtos = ref<GetMemberResponseDto[]>([]);
-  const getMemberSearchResponseDtos = ref<GetMemberSearchResponseDto[]>([]);
 
-  // 회원 정보 조회
+  const sortOptions = [
+    { label: '등록일순', value: 'createdAt,desc' },
+    { label: '이름순', value: 'memberName,desc' },
+  ];
+
+  // default pagenation 값 세팅
+  const requestedSort = ref<string>(sortOptions[0].value);
+  const requestedPage = ref<number>(0);
+  const requestedSize = ref<number>(20);
+
   // 컴포넌트가 마운트 된 후 API 호출
   onMounted(async () => {
-    try {
-      const response: Array<GetMemberResponseDto> = await getMembers(0, 20, "createdAt,desc");
-      getMemberResponseDtos.value = response;
-    } catch (error) {
-      console.error('Error fetching members:', error);
-    }
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const page: number = Number(urlSearchParams.get("page")) || 0;
+    const size: number = Number(urlSearchParams.get("size")) || 20;
+    const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
+
+    // 회원 정보 조회
+    const response: GetMemberResponseDto[] = await getMembers(page, size, sort);
+    getMemberResponseDtos.value = response;
   });
 
-  // 회원 정보 검색
-  onMounted(async () => {
+  // 정렬기준 업데이트 함수
+  const changeSort = async (sort: string) => {
     try {
-      const response: Array<GetMemberSearchResponseDto> = await getMemberSearchResult("이우엽", 0, 20, "createdAt,desc");
-      getMemberSearchResponseDtos.value = response;
+      requestedSort.value = sort;
+      // 회원 정보 조회
+      const response: GetMemberResponseDto[] = await getMembers(
+        requestedPage.value, requestedSize.value, sort);
+      getMemberResponseDtos.value = response;
+
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      urlSearchParams.set("sort", sort);
+
+      const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+      history.pushState(null, '', newUrl);
     } catch (error) {
       console.error('Error fetching members:', error);
     }
-  });
+  };
 
 </script>
   
