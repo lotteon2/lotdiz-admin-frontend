@@ -2,6 +2,14 @@
   <div class="info">
     <div class="condition">
       <div class="search">
+        <select class="search-select">
+          <option class="search-select-option" value="all">전체</option>
+          <option class="search-select-option" value="makerName">이름</option>
+          <option class="search-select-option" value="makerPhoneNumber">전화번호</option>
+        </select>
+        <div class="search-input-container">
+          <input class="search-input" type="text">
+        </div>
       </div>
       <div class="sort">
         <div 
