@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <div>hello lotdiz</div>
+  <div class="main">
+    <h1>메인 페이지</h1>
   </div>
 </template>
-<!-- css 모듈  -->
-<!-- https://ko.vuejs.org/api/sfc-css-features.html#css-modules -->
+
+<script setup lang="ts">
+</script>
+
+<style>
+</style>
