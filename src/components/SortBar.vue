@@ -12,7 +12,7 @@
 
 <script lang="ts">
     export default {
-        name : 'ConditionBar',
+        name : 'SortBar',
         props : {
             sortOptions: Array,
             requestedSort: String,

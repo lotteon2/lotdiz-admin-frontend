@@ -1,6 +1,7 @@
 <template>
   <div class="info">
     <div class="condition">
+      <SearchBar @search="onSearch"/>
       <SortBar 
         :sortOptions="sortOptions" 
         :changeSort="changeSort" 
@@ -10,22 +11,29 @@
       :tableHeaders="tableHeaders"
       :tableInfos="getProjectResponseDtos"
       :tableProperties="tableProperties"/>
+    <PageNavBar 
+      :totalPages="totalPages"
+      :requestedPage="requestedPage"
+      :changePage="changePage"/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { getProjects } from '@/services/project/ProjectAPIService';
-  import type { GetProjectResponseDto } from '@/services/project/ProjectDto';
+  import { getProjects, getProjectSearchResult } from '@/services/project/ProjectAPIService';
+  import type { GetProjectResponseDto, GetProjectPageResponseDto } from '@/services/project/ProjectDto';
   import TableInfo from '@/components/TableInfo.vue';
   import SortBar from '@/components/SortBar.vue';
+  import SearchBar from '@/components/SearchBar.vue';
+  import PageNavBar from '@/components/PageNavBar.vue';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getProjectResponseDtos = ref<GetProjectResponseDto[]>([]);
+  const totalPages = ref<number>(1);
 
   const sortOptions = [
     { label: '등록일순', value: 'createdAt,desc' },
-    { label: '이름순', value: 'memberName,desc' },
+    { label: '이름순', value: 'projectName,desc' },
   ];
 
   // default pagenation 값 세팅
@@ -41,18 +49,44 @@
     const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
 
     // 프로젝트 정보 조회
-    const response: Array<GetProjectResponseDto> = await getProjects(page, size, sort);
-    getProjectResponseDtos.value = response;
+    const response: GetProjectPageResponseDto<GetProjectResponseDto> = await getProjects(page, size, sort);
+    getProjectResponseDtos.value = response.projects;
   });
+
+  let search = ref<string>("");
+  const onSearch = async (searchTerm: string) => {
+    const response: GetProjectPageResponseDto<GetProjectResponseDto>
+       = await getProjectSearchResult(searchTerm, requestedPage.value, requestedSize.value, requestedSort.value);
+    getProjectResponseDtos.value = response.projects;
+    search.value = searchTerm;
+
+    totalPages.value = response.totalPages;
+  }
+
+  const changePage = async (page: number) => {
+    requestedPage.value = page;
+    // 회원 정보 조회
+    const response: GetProjectPageResponseDto<GetMemberResponseDto> = 
+      await getProjectSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
+      getProjectResponseDtos.value = response.projects;
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set("page", (page).toString());
+
+    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+    history.pushState(null, '', newUrl);
+  }
 
   // 정렬기준 업데이트 함수
   const changeSort = async (sort: string) => {
     try {
       requestedSort.value = sort;
       // 회원 정보 조회
-      const response: Array<GetProjectResponseDto> = await getProjects(
-        requestedPage.value, requestedSize.value, sort);
-      getProjectResponseDtos.value = response;
+      const response: GetProjectPageResponseDto<GetProjectResponseDto> = 
+        await getProjectSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
+      getProjectResponseDtos.value = response.projects;
+
+      totalPages.value = response.totalPages;
 
       const urlSearchParams = new URLSearchParams(window.location.search);
       urlSearchParams.set("sort", sort);
@@ -72,4 +106,5 @@
 @import "../assets/css/info.css";
 @import "../assets/css/conditionbar.css";
 @import "../assets/css/tableview.css";
+@import "../assets/css/pagenavbar.css";
 </style>

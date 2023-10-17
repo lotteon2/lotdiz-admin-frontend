@@ -1,12 +1,12 @@
 import { getData } from "@/api/APISpec";
-import type { GetMemberResponseDto, GetMemberSearchResponseDto } from "./MemberDto";
+import type { GetMemberPageResponseDto, GetMemberResponseDto } from "./MemberDto";
 
 export const getMembers = async (page: number, size: number, sort: string)
-  : Promise<Array<GetMemberResponseDto>> => {
+  : Promise<GetMemberPageResponseDto<GetMemberResponseDto>> => {
   try {
-    const response = await getData<Array<GetMemberResponseDto>>(`/members?page=${page}&size=${size}&sort=${sort}`);
-    const getMemberResponseDtos: Array<GetMemberResponseDto> = response.data["members"];
-    return getMemberResponseDtos;
+    const response = await getData<GetMemberPageResponseDto<GetMemberResponseDto>>(`/api/members?page=${page}&size=${size}&sort=${sort}`);
+    const getMemberPageResponseDto: GetMemberPageResponseDto<GetMemberResponseDto> = response.data;
+    return getMemberPageResponseDto;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to get member');
@@ -14,11 +14,11 @@ export const getMembers = async (page: number, size: number, sort: string)
 }
 
 export const getMemberSearchResult = async (query:string, page: number, size: number, sort: string)
-  : Promise<Array<GetMemberResponseDto>> => {
+  : Promise<GetMemberPageResponseDto<GetMemberResponseDto>> => {
   try {
-    const response = await getData<Array<GetMemberResponseDto>>(`/members/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
-    const getMemberSearchResponseDtos: Array<GetMemberResponseDto> = response.data["members"];
-    return getMemberSearchResponseDtos;
+    const response = await getData<GetMemberPageResponseDto<GetMemberResponseDto>>(`/api/members/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+    const getMemberPageResponseDto: GetMemberPageResponseDto<GetMemberResponseDto> = response.data;
+    return getMemberPageResponseDto;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to get member');

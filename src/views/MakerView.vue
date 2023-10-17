@@ -11,23 +11,29 @@
       :tableHeaders="tableHeaders"
       :tableInfos="getMakerResponseDtos"
       :tableProperties="tableProperties"/>
+    <PageNavBar 
+      :totalPages="totalPages"
+      :requestedPage="requestedPage"
+      :changePage="changePage"/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { getMakerSearchResult, getMakers } from '@/services/maker/MakerAPIService';
-  import type { GetMakerResponseDto } from '@/services/maker/MakerDto';
+  import type { GetMakerResponseDto, GetMakerPageResponseDto } from '@/services/maker/MakerDto';
   import TableInfo from '@/components/TableInfo.vue';
   import SortBar from '@/components/SortBar.vue';
   import SearchBar from '@/components/SearchBar.vue';
+  import PageNavBar from '@/components/PageNavBar.vue';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getMakerResponseDtos = ref<GetMakerResponseDto[]>([]);
+  const totalPages = ref<number>(1);
 
   const sortOptions = [
     { label: '등록일순', value: 'createdAt,desc' },
-    { label: '이름순', value: 'memberName,desc' },
+    { label: '이름순', value: 'makerName,desc' },
   ];
 
   // default pagenation 값 세팅
@@ -43,24 +49,50 @@
     const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
 
     // 메이커 정보 조회
-    const response: Array<GetMakerResponseDto> = await getMakers(page, size, sort);
-    getMakerResponseDtos.value = response;
+    const response: GetMakerPageResponseDto<GetMakerResponseDto> = await getMakers(page, size, sort);
+    getMakerResponseDtos.value = response.makers;
+
+    // 총 페이지 다시 계산
+    totalPages.value = response.totalPages;
   });
 
   // 검색 이벤트
+  let search = ref<string>("");
   const onSearch = async (searchTerm: string) => {
-    const response = await getMakerSearchResult(searchTerm, requestedPage, requestedSize, requestedSort);
-    getMakerResponseDtos.value = response;
+    const response: GetMakerPageResponseDto<GetMakerResponseDto>
+       = await getMakerSearchResult(searchTerm, requestedPage.value, requestedSize.value, requestedSort.value);
+    getMakerResponseDtos.value = response.makers;
+    search.value = searchTerm;
+
+    // 총 페이지 다시 계산
+    totalPages.value = response.totalPages;
+  }
+
+  const changePage = async (page: number) => {
+    requestedPage.value = page;
+    // 회원 정보 조회
+    const response: GetMakerPageResponseDto<GetMemberResponseDto> = 
+      await getMakerSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
+      getMakerResponseDtos.value = response.makers;
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set("page", (page).toString());
+
+    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+    history.pushState(null, '', newUrl);
   }
 
   // 정렬기준 업데이트 함수
   const changeSort = async (sort: string) => {
     try {
       requestedSort.value = sort;
-      // 회원 정보 조회
-      const response: Array<GetMakerResponseDto> = await getMakers(
-        requestedPage.value, requestedSize.value, sort);
-      getMakerResponseDtos.value = response;
+      // 메이커 정보 조회
+      const response: GetMakerPageResponseDto<GetMakerResponseDto> = 
+        await getMakerSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
+      getMakerResponseDtos.value = response.makers;
+
+      // 총 페이지 다시 계산
+      totalPages.value = response.totalPages;
 
       const urlSearchParams = new URLSearchParams(window.location.search);
       urlSearchParams.set("sort", sort);
@@ -80,4 +112,5 @@
 @import "../assets/css/info.css";
 @import "../assets/css/conditionbar.css";
 @import "../assets/css/tableview.css";
+@import "../assets/css/pagenavbar.css";
 </style>
