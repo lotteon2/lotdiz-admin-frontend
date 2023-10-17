@@ -66,7 +66,7 @@
   const changePage = async (page: number) => {
     requestedPage.value = page;
     // 회원 정보 조회
-    const response: GetProjectPageResponseDto<GetMemberResponseDto> = 
+    const response: GetProjectPageResponseDto<GetProjectResponseDto> = 
       await getProjectSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
       getProjectResponseDtos.value = response.projects;
 
