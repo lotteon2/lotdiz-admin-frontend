@@ -14,10 +14,10 @@ export const getMakers = async (page: number, size: number, sort: string)
 }
 
 export const getMakerSearchResult = async (query:string, page: number, size: number, sort: string)
-  : Promise<Array<GetMakerSearchResponseDto>> => {
+  : Promise<Array<GetMakerResponseDto>> => {
   try {
-    const response = await getData<Array<GetMakerSearchResponseDto>>(`/makers?query=${query}&page=${page}&size=${size}&sort=${sort}`);
-    const getMakerSearchResponseDtos: Array<GetMakerSearchResponseDto> = response.data["makers"];
+    const response = await getData<Array<GetMakerResponseDto>>(`/makers/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+    const getMakerSearchResponseDtos: Array<GetMakerResponseDto> = response.data["makers"];
     return getMakerSearchResponseDtos;
   } catch (error) {
     console.error(error);

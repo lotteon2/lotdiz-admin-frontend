@@ -1,47 +1,26 @@
 <template>
   <div class="info">
     <div class="condition">
-      <div class="search">
-        <select class="search-select">
-          <option class="search-select-option" value="all">전체</option>
-          <option class="search-select-option" value="makerName">이름</option>
-          <option class="search-select-option" value="makerPhoneNumber">전화번호</option>
-        </select>
-        <div class="search-input-container">
-          <input class="search-input" type="text">
-        </div>
-      </div>
-      <div class="sort">
-        <div 
-          class="sort-option" 
-          v-for="sortOption in sortOptions" 
-          :key="sortOption.value" 
-          :class="{ 'selected': requestedSort === sortOption.value }">
-          <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
-        </div>
-      </div>
+      <SearchBar @search="onSearch"/>
+      <SortBar 
+        :sortOptions="sortOptions" 
+        :changeSort="changeSort" 
+        :requestedSort="requestedSort"/>
     </div>
-    <table>
-      <thead>
-        <th>이름</th>
-        <th>이메일</th>
-        <th>전화번호</th>
-        <th>등록일</th>
-      </thead>
-      <tbody v-for="member in getMemberResponseDtos" :key="member.memberId">
-        <td>{{ member.memberName }}</td>
-        <td>{{ member.memberEmail }}</td>
-        <td>{{ member.memberPhoneNumber }}</td>
-        <td>{{ member.createdAt }}</td>
-      </tbody>
-    </table>
+    <TableInfo 
+      :tableHeaders="tableHeaders"
+      :tableInfos="getMemberResponseDtos"
+      :tableProperties="tableProperties"/>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { getMembers } from '@/services/member/MemberAPIService';
+  import { ref, onMounted, watchEffect, watch } from 'vue';
+  import { getMemberSearchResult, getMembers } from '@/services/member/MemberAPIService';
   import type { GetMemberResponseDto } from '@/services/member/MemberDto';
+  import TableInfo from '@/components/TableInfo.vue';
+  import SortBar from '@/components/SortBar.vue';
+  import SearchBar from '@/components/SearchBar.vue';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getMemberResponseDtos = ref<GetMemberResponseDto[]>([]);
@@ -68,6 +47,12 @@
     getMemberResponseDtos.value = response;
   });
 
+  // 검색 이벤트
+  const onSearch = async (searchTerm: string) => {
+    const response = await getMemberSearchResult(searchTerm, requestedPage, requestedSize, requestedSort);
+    getMemberResponseDtos.value = response;
+  }
+
   // 정렬기준 업데이트 함수
   const changeSort = async (sort: string) => {
     try {
@@ -87,6 +72,8 @@
     }
   };
 
+  const tableHeaders = ["이름", "이메일", "전화번호", "등록일"];
+  const tableProperties = ["memberName", "memberEmail", "memberPhoneNumber", "createdAt"];
 </script>
   
 <style>

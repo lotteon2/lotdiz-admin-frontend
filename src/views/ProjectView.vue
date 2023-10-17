@@ -1,46 +1,15 @@
 <template>
   <div class="info">
     <div class="condition">
-      <div class="search">
-        <select class="search-select">
-          <option class="search-select-option" value="all">전체</option>
-          <option class="search-select-option" value="makerName">이름</option>
-          <option class="search-select-option" value="makerPhoneNumber">전화번호</option>
-        </select>
-        <div class="search-input-container">
-          <input class="search-input" type="text">
-        </div>
-      </div>
-      <div class="sort">
-        <div 
-          class="sort-option" 
-          v-for="sortOption in sortOptions" 
-          :key="sortOption.value" 
-          :class="{ 'selected': requestedSort === sortOption.value }">
-          <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
-        </div>
-      </div>
+      <SortBar 
+        :sortOptions="sortOptions" 
+        :changeSort="changeSort" 
+        :requestedSort="requestedSort"/>
     </div>
-    <table>
-      <thead>
-        <th></th>
-        <th>프로젝트명</th>
-        <th>카테고리</th>
-        <th>메이커명</th>
-        <th>남은 기간</th>
-        <th>인증 상태</th>
-        <th>등록일</th>
-      </thead>
-      <tbody v-for="project in getProjectResponseDtos" :key="project.projectId">
-        <td></td>
-        <td>{{ project.projectName }}</td>
-        <td>{{ project.categoryName }}</td>
-        <td>{{ project.makerName }}</td>
-        <td>{{ project.projectDueDate }}</td>
-        <td>{{ project.projectIsAuthorized }}</td>
-        <td>{{ project.createdAt }}</td>
-      </tbody>
-    </table>
+    <TableInfo 
+      :tableHeaders="tableHeaders"
+      :tableInfos="getProjectResponseDtos"
+      :tableProperties="tableProperties"/>
   </div>
 </template>
 
@@ -48,6 +17,8 @@
   import { ref, onMounted } from 'vue';
   import { getProjects } from '@/services/project/ProjectAPIService';
   import type { GetProjectResponseDto } from '@/services/project/ProjectDto';
+  import TableInfo from '@/components/TableInfo.vue';
+  import SortBar from '@/components/SortBar.vue';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getProjectResponseDtos = ref<GetProjectResponseDto[]>([]);
@@ -92,6 +63,9 @@
       console.error('Error fetching projects:', error);
     }
   };
+
+  const tableHeaders = ["프로젝트명", "카테고리", "메이커명", "남은 기간", "인증 상태", "등록일"];
+  const tableProperties = ["projectName", "categoryName", "makerName", "projectDueDate", "projectIsAuthorized", "createdAt"];
 </script>
   
 <style>
