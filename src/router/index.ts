@@ -28,6 +28,6 @@ const router = createRouter({
       component: MakerView
     },
   ]
-})
+});
 
 export default router
