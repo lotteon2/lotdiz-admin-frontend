@@ -10,7 +10,8 @@
     <TableInfo 
       :tableHeaders="tableHeaders"
       :tableInfos="getProjectResponseDtos"
-      :tableProperties="tableProperties"/>
+      :tableProperties="tableProperties"
+      :authorizeProject="authProject"/>
     <PageNavBar 
       :totalPages="totalPages"
       :requestedPage="requestedPage"
@@ -20,7 +21,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { getProjects, getProjectSearchResult } from '@/services/project/ProjectAPIService';
+  import { getProjects, getProjectSearchResult, authorizeProject } from '@/services/project/ProjectAPIService';
   import type { GetProjectResponseDto, GetProjectPageResponseDto } from '@/services/project/ProjectDto';
   import TableInfo from '@/components/TableInfo.vue';
   import SortBar from '@/components/SortBar.vue';
@@ -97,6 +98,16 @@
       console.error('Error fetching projects:', error);
     }
   };
+
+  const authProject = async (projectId: number) => {
+    // 프로젝트 인증
+    await authorizeProject(projectId);
+
+    // 프로젝트 정보 조회
+    const response: GetProjectPageResponseDto<GetProjectResponseDto> = 
+        await getProjectSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
+    getProjectResponseDtos.value = response.projects;
+  }
 
   const tableHeaders = ["프로젝트명", "카테고리", "메이커명", "남은 기간", "인증 상태", "등록일"];
   const tableProperties = ["projectName", "categoryName", "makerName", "projectDueDate", "projectIsAuthorized", "createdAt"];
