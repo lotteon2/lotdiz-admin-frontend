@@ -1,12 +1,24 @@
 import { getData, postData } from "@/api/APISpec";
-import type { GetProjectResponseDto } from "./ProjectDto";
+import type { GetProjectResponseDto, GetProjectSearchResponseDto, GetProjectPageResponseDto } from "./ProjectDto";
 
 export const getProjects = async (page: number, size: number, sort: string)
-  : Promise<Array<GetProjectResponseDto>> => {
+  : Promise<GetProjectPageResponseDto<GetProjectResponseDto>> => {
   try {
-    const response = await getData<Array<GetProjectResponseDto>>(`/projects?page=${page}&size=${size}&sort=${sort}`);
-    const getProjectResponseDtos: Array<GetProjectResponseDto> = response.data["projects"];
-    return getProjectResponseDtos;
+    const response = await getData<GetProjectPageResponseDto<GetProjectResponseDto>>(`/api/projects?page=${page}&size=${size}&sort=${sort}`);
+    const getProjectPageResponseDto: GetProjectPageResponseDto<GetProjectResponseDto> = response.data;
+    return getProjectPageResponseDto;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to get project');
+  }
+}
+
+export const getProjectSearchResult = async (query:string, page: number, size: number, sort: string)
+  : Promise<GetProjectPageResponseDto<GetProjectSearchResponseDto>> => {
+  try {
+    const response = await getData<GetProjectPageResponseDto<GetProjectSearchResponseDto>>(`/api/projects/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+    const getProjectPageResponseDto: GetProjectPageResponseDto<GetProjectSearchResponseDto> = response.data;
+    return getProjectPageResponseDto;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to get project');
@@ -15,7 +27,7 @@ export const getProjects = async (page: number, size: number, sort: string)
 
 export const authorizeProject = async (projectId: number) => {
   try {
-    await postData(`/projects/${projectId}/auth`);
+    await postData(`/api/projects/${projectId}/auth`);
   } catch (error) {
     console.error(error);
     throw new Error('Failed to auth project');

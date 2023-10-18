@@ -16,9 +16,9 @@ export const getData = async <T>(url: string): Promise<SuccessResponse<T>> => {
   try {
     const response = await client.get<SuccessResponse<T>>(url);
     return response.data;
-  } catch (error: ErrorResponse) {
-    console.error(error.detail);
-    throw new Error(error.message);
+  } catch (error) {
+    console.error(error);
+    throw new Error("error cause when get data");
   }
 };
 
@@ -27,8 +27,8 @@ export const postData = async <T>(url: string, data?: any): Promise<SuccessRespo
   try {
     const response = await client.post<SuccessResponse<T>>(url, data);
     return response.data;
-  } catch (error: ErrorResponse) {
-    console.error(error.detail);
-    throw new Error(error.message);
+  } catch (error) {
+    console.error(error);
+    throw new Error("error cause when post data");
   }
 };

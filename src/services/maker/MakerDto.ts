@@ -1,3 +1,8 @@
+export interface GetMakerPageResponseDto<T> {
+    totalPages: number,
+    makers: Array<T>
+}
+
 export interface GetMakerResponseDto {
     makerId: number;
     makerName: string;

@@ -1,3 +1,8 @@
+export interface GetMemberPageResponseDto<T> {
+    totalPages: number,
+    members: Array<T>
+}
+
 export interface GetMemberResponseDto {
     memberId: number;
     memberRole: string;
