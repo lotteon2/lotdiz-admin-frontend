@@ -1,31 +1,31 @@
 <template>
-  <div class="info">
-    <div class="condition">
-      <SearchBar @search="onSearch"/>
-      <SortBar 
-        :sortOptions="sortOptions" 
-        :changeSort="changeSort" 
-        :requestedSort="requestedSort"/>
-    </div>
-    <TableInfo 
-      :tableHeaders="tableHeaders"
-      :tableInfos="getMemberResponseDtos"
-      :tableProperties="tableProperties"/>
-    <PageNavBar 
+  <div class="content-header">
+    <SearchBar @search="onSearch"/>
+    <SortBar
+      :sortOptions="sortOptions"
+      :changeSort="changeSort"
+      :requestedSort="requestedSort"/>
+  </div>
+  <div class="content-body">
+    <TableInfo
+        :tableHeaders="tableHeaders"
+        :tableInfos="getMemberResponseDtos"
+        :tableProperties="tableProperties"/>
+  </div>
+  <PageNavBar
       :totalPages="totalPages"
       :requestedPage="requestedPage"
       :changePage="changePage"/>
-  </div>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { getMemberSearchResult, getMembers } from '@/services/member/MemberAPIService';
   import type { GetMemberResponseDto, GetMemberPageResponseDto } from '@/services/member/MemberDto';
-  import TableInfo from '@/components/TableInfo.vue';
-  import SortBar from '@/components/SortBar.vue';
-  import SearchBar from '@/components/SearchBar.vue';
-  import PageNavBar from '@/components/PageNavBar.vue';
+  import TableInfo from '@/components/TableView.vue';
+  import SortBar from '@/components/Sort.vue';
+  import SearchBar from '@/components/Search.vue';
+  import PageNavBar from '@/components/PageNavbar.vue';
 
   // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
   const getMemberResponseDtos = ref<GetMemberResponseDto[]>([]);
@@ -112,8 +112,5 @@
 </script>
 
 <style>
-@import "../assets/css/info.css";
-@import "../assets/css/conditionbar.css";
-@import "../assets/css/tableview.css";
-@import "../assets/css/pagenavbar.css";
+
 </style>
