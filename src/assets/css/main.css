@@ -1,22 +1,100 @@
+/* reset css start */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* reset css end */
+
 .container {
     display: flex;
+    /* 가로로 오토 레이아웃 */
     flex-direction: row;
+    /* 아이템을 시작점을 기준으로 정렬 */
+    justify-content: flex-start;
+    /* 아이템을 정중앙 정렬 */
     align-items: center;
-    width: 100%;
-    gap: 50px;
+}
+
+header {
+    display: flex;
+    width: 250px;
+    height: 100vh;
+    align-items: stretch;
+    position: relative;
+
+    /* Y축으로 넘치지 않도록 세팅 */
+    overflow-y: hidden;
 }
 
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 74px;
+    width: 100%;
+    height: 100vh;
+
+    gap: 20px;
 }
 
 .content-header {
     display: flex;
-    align-items: flex-end;
-    width: 600px;
+    align-items: center;
+    position: absolute;
+    margin-top: 50px;
+    width: 100%;
+    max-width: 600px;
     height: 40px;
+    max-height: 40px;
+
     gap: 20px;
+}
+
+.content-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 150px;
+
+    gap: 60px;
 }

@@ -1,77 +1,72 @@
 table {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    width: 1200px;
+    height: 100%;
+    min-height: 560px;
 
     border-radius: 5px;
-    border: 3px solid rgba(245, 245, 249, 0.50);
-    background: #FFF;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: 1px solid #CDCDCD;
 }
 
 thead {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    gap: 20px;
-
-    border-radius: 5px 5px 0px 0px;
-    border-bottom: 1px solid #979798;
-    background: #FFF;
+    max-height: 50px;
 }
 
 th {
-    display: flex;
-    width: 10rem;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    color: #000;
-    text-align: center;
-    font-family: Open Sans;
-    font-size: 15px;
-    font-style: normal;
     font-weight: 700;
-    line-height: 140%; /* 28px */
 }
 
 tbody {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    gap: 20px;
+    max-height: 50px;
 
-    border-bottom: 1px solid #979798;
-    background: #FFF;
+    border-top: 1px solid #CDCDCD;
 }
 
 td {
-    display: flex;
-    width: 10rem;
+    font-weight: 400;
+}
+
+thead, tbody {
+    width: 100%;
     height: 100%;
+}
+
+th, td {
+    display: flex;
+    width: 100%;
+    max-width: 90px;
+    height: 100%;
+    max-height: 50px;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 
     color: #000;
     text-align: center;
     font-family: Open Sans;
-    font-size: 15px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 400;
     line-height: 140%;
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .project-auth-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
-    flex: 1 0 0;
 
-    border-radius: 0.3125rem;
+    border-radius: 5px;
     border: 1px solid #00F;
 
     color: #00F;
@@ -81,11 +76,9 @@ td {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
-    flex: 1 0 0;
     background-color: #FFF;
 
-    border-radius: 0.3125rem;
+    border-radius: 5px;
     border: 1px solid #F00;
 
     color: #F00;

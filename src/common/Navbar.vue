@@ -14,21 +14,21 @@
         <div class="router-text">대시보드</div>
       </RouterLink>
       <RouterLink class="router-link" :class="{ 'active-link': isActiveLink('member')}"
-                  to="/member?page=0&size=20&sort=createdAt,desc">
+                  to="/member?page=0&size=10&sort=createdAt,desc">
         <div class="router-img">
           <img :src="isActiveLink('member') ? logoImg.member.active : logoImg.member.inactive">
         </div>
         <div class="router-text">회원 정보</div>
       </RouterLink>
       <RouterLink class="router-link" :class="{ 'active-link': isActiveLink('project')}"
-                  to="/project?page=0&size=20&sort=createdAt,desc">
+                  to="/project?page=0&size=10&sort=createdAt,desc">
         <div class="router-img">
           <img :src="isActiveLink('project') ? logoImg.project.active : logoImg.project.inactive">
         </div>
         <div class="router-text">프로젝트 정보</div>
       </RouterLink>
       <RouterLink class="router-link" :class="{ 'active-link': isActiveLink('maker')}"
-                  to="/maker?page=0&size=20&sort=createdAt,desc">
+                  to="/maker?page=0&size=10&sort=createdAt,desc">
         <div class="router-img">
           <img :src="isActiveLink('maker') ? logoImg.maker.active : logoImg.maker.inactive">
         </div>

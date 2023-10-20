@@ -11,11 +11,11 @@
         :tableHeaders="tableHeaders"
         :tableInfos="getMakerResponseDtos"
         :tableProperties="tableProperties"/>
+    <PageNavBar
+        :totalPages="totalPages"
+        :requestedPage="requestedPage"
+        :changePage="changePage"/>
   </div>
-  <PageNavBar
-      :totalPages="totalPages"
-      :requestedPage="requestedPage"
-      :changePage="changePage"/>
 </template>
 
 <script setup lang="ts">
@@ -39,13 +39,13 @@
   // default pagenation 값 세팅
   const requestedSort = ref<string>(sortOptions[0].value);
   const requestedPage = ref<number>(0);
-  const requestedSize = ref<number>(20);
+  const requestedSize = ref<number>(10);
 
   // 컴포넌트가 마운트 된 후 API 호출
   onMounted(async () => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const page: number = Number(urlSearchParams.get("page")) || 0;
-    const size: number = Number(urlSearchParams.get("size")) || 20;
+    const size: number = Number(urlSearchParams.get("size")) || 10;
     const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
 
     // 메이커 정보 조회
@@ -71,7 +71,7 @@
   const changePage = async (page: number) => {
     requestedPage.value = page;
     // 회원 정보 조회
-    const response: GetMakerPageResponseDto<GetMemberResponseDto> = 
+    const response: GetMakerPageResponseDto<GetMakerResponseDto> =
       await getMakerSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
       getMakerResponseDtos.value = response.makers;
 

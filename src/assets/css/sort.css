@@ -1,10 +1,12 @@
 .sort {
     display: flex;
-    width: 200px;
+    /* 같은 형제들과의 비율 1 */
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
-    gap: 20px;
     align-self: stretch;
+
+    gap: 10px;
 }
 
 a {
@@ -21,7 +23,7 @@ a {
     align-self: stretch;
 
     border-radius: 5px;
-    border: 1px solid #7C7C7C;
+    border: 1px solid #CDCDCD;
 
     color: #7C7C7C;
     text-align: center;
