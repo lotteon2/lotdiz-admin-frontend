@@ -38,41 +38,35 @@
   </aside>
 </template>
 
-<script lang="ts">
-export default {
-  // 객체 또는 함수의 형태로 vue 인스턴스가 사용할 정보를 가지고 있는 속성
-  data() {
-    return {
-      activeLink: '',
-      logoImg: {
-        home: {
-          inactive: "/img/home.svg",
-          active: "/img/home-active.svg",
-        },
-        member: {
-          inactive: "/img/member.svg",
-          active: "/img/member-active.svg",
-        },
-        project: {
-          inactive: "/img/project.svg",
-          active: "/img/project-active.svg",
-        },
-        maker: {
-          inactive: "/img/maker.svg",
-          active: "/img/maker-active.svg",
-        }
-      }
-    }
+<script setup lang="ts">
+import {ref} from "vue";
+import {useRoute} from "vue-router";
+
+const logoImg = ref({
+  home: {
+    inactive: "/img/home.svg",
+    active: "/img/home-active.svg",
   },
-  // vue 인스턴스가 사용할 함수를 저장하고 있는 속성
-  methods: {
-    isActiveLink(link: string) {
-      if (this.$route.path === "/") {
-        return link === "";
-      }
-      return this.$route.name === link;
-    },
+  member: {
+    inactive: "/img/member.svg",
+    active: "/img/member-active.svg",
   },
+  project: {
+    inactive: "/img/project.svg",
+    active: "/img/project-active.svg",
+  },
+  maker: {
+    inactive: "/img/maker.svg",
+    active: "/img/maker-active.svg",
+  }
+});
+
+const route = useRoute();
+const isActiveLink = (link: string) => {
+  if (route.path === "/") {
+    return link === "";
+  }
+  return route.name === link;
 }
 </script>
 
