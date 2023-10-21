@@ -1,17 +1,17 @@
 <template>
   <div class="content-header">
-    <SearchBar @search-request="onSearch"/>
-    <SortBar
+    <SearchComponent @search-request="onSearch"/>
+    <SortComponent
         :sortOptions="sortOptions"
         :changeSort="changeSort"
         :requestedSort="requestedSort"/>
   </div>
   <div class="content-body">
-    <TableInfo
+    <TableComponent
         :tableHeaders="tableHeaders"
         :tableInfos="getMemberResponseDtos"
         :tableProperties="tableProperties"/>
-    <PageNavBar
+    <PaginationComponent
         :totalPages="totalPages"
         :requestedPage="requestedPage"
         :changePage="changePage"/>
@@ -23,10 +23,10 @@
 import {ref, onBeforeMount} from 'vue';
 import {getMemberSearchResult, getMembers} from '@/services/member/MemberAPIService';
 import type {GetMemberResponseDto, GetMemberPageResponseDto} from '@/services/member/MemberDto';
-import TableInfo from '@/components/TableComponent.vue';
-import SortBar from '@/components/SortComponent.vue';
-import SearchBar from '@/components/SearchComponent.vue';
-import PageNavBar from '@/components/PagenationComponent.vue';
+import TableComponent from '@/components/TableComponent.vue';
+import SortComponent from '@/components/SortComponent.vue';
+import SearchComponent from '@/components/SearchComponent.vue';
+import PaginationComponent from '@/components/PaginationComponent.vue';
 
 // 검색 참조 값
 let search = ref<string>("");

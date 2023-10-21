@@ -1,18 +1,18 @@
 <template>
   <div class="content-header">
-    <SearchBar @search-request="onSearch"/>
-    <SortBar
+    <SearchComponent @search-request="onSearch"/>
+    <SortComponent
         :sortOptions="sortOptions"
         :changeSort="changeSort"
         :requestedSort="requestedSort"/>
   </div>
   <div class="content-body">
-    <TableInfo
+    <TableComponent
         :tableHeaders="tableHeaders"
         :tableInfos="getProjectResponseDtos"
         :tableProperties="tableProperties"
         :authorizeProject="authProject"/>
-    <PageNavBar
+    <PaginationComponent
         :totalPages="totalPages"
         :requestedPage="requestedPage"
         :changePage="changePage"/>
@@ -23,10 +23,10 @@
 import {ref, onBeforeMount} from 'vue';
 import {getProjects, getProjectSearchResult, authorizeProject} from '@/services/project/ProjectAPIService';
 import type {GetProjectResponseDto, GetProjectPageResponseDto} from '@/services/project/ProjectDto';
-import TableInfo from '@/components/TableComponent.vue';
-import SortBar from '@/components/SortComponent.vue';
-import SearchBar from '@/components/SearchComponent.vue';
-import PageNavBar from '@/components/PagenationComponent.vue';
+import TableComponent from '@/components/TableComponent.vue';
+import SortComponent from '@/components/SortComponent.vue';
+import SearchComponent from '@/components/SearchComponent.vue';
+import PaginationComponent from '@/components/PaginationComponent.vue';
 
 let search = ref<string>("");
 
