@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, onBeforeMount} from 'vue';
+import {ref, onBeforeMount} from 'vue';
 import {getProjects, getProjectSearchResult, authorizeProject} from '@/services/project/ProjectAPIService';
 import type {GetProjectResponseDto, GetProjectPageResponseDto} from '@/services/project/ProjectDto';
 import TableInfo from '@/components/TableView.vue';
