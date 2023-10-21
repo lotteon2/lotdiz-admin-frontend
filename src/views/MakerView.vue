@@ -50,15 +50,11 @@
       page: number = requestedPage.value,
       size: number = requestedSize.value,
       sort: string = requestedSort.value) => {
-    try {
-      const response: GetMakerPageResponseDto<GetMakerResponseDto>
-          = await getMakers(page, size, sort);
-      getMakerResponseDtos.value = response.makers;
+    const response: GetMakerPageResponseDto<GetMakerResponseDto>
+        = await getMakers(page, size, sort);
+    getMakerResponseDtos.value = response.makers;
 
-      updateTotalPages(response);
-    } catch (error) {
-      console.error('Error fetching makers:', error);
-    }
+    updateTotalPages(response);
   };
 
   const fetchSearchData = async (
@@ -66,15 +62,11 @@
       page: number = requestedPage.value,
       size: number = requestedSize.value,
       sort: string = requestedSort.value) => {
-    try {
-      const response: GetMakerPageResponseDto<GetMakerResponseDto>
-          = await getMakerSearchResult(searchTerm, page, size, sort);
-      getMakerResponseDtos.value = response.makers;
+    const response: GetMakerPageResponseDto<GetMakerResponseDto>
+        = await getMakerSearchResult(searchTerm, page, size, sort);
+    getMakerResponseDtos.value = response.makers;
 
-      updateTotalPages(response);
-    } catch (error) {
-      console.error('Error fetching makers:', error);
-    }
+    updateTotalPages(response);
   };
 
 

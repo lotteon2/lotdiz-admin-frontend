@@ -20,7 +20,7 @@
 
 <!-- setup: 컴포넌트 API를 사용하기로 선언 -->
 <script setup lang="ts">
-import {ref, onBeforeMount } from 'vue';
+import {ref, onBeforeMount} from 'vue';
 import {getMemberSearchResult, getMembers} from '@/services/member/MemberAPIService';
 import type {GetMemberResponseDto, GetMemberPageResponseDto} from '@/services/member/MemberDto';
 import TableInfo from '@/components/TableView.vue';
@@ -58,15 +58,11 @@ const fetchData = async (
     page: number = requestedPage.value,
     size: number = requestedSize.value,
     sort: string = requestedSort.value) => {
-  try {
-    const response: GetMemberPageResponseDto<GetMemberResponseDto> =
-        await getMembers(page, size, sort);
-    getMemberResponseDtos.value = response.members;
+  const response: GetMemberPageResponseDto<GetMemberResponseDto> =
+      await getMembers(page, size, sort);
+  getMemberResponseDtos.value = response.members;
 
-    updateTotalPages(response);
-  } catch (error) {
-    console.error('Error fetching members:', error);
-  }
+  updateTotalPages(response);
 };
 
 const fetchSearchData = async (
@@ -74,15 +70,11 @@ const fetchSearchData = async (
     page: number = requestedPage.value,
     size: number = requestedSize.value,
     sort: string = requestedSort.value) => {
-  try {
-    const response: GetMemberPageResponseDto<GetMemberResponseDto> =
-        await getMemberSearchResult(searchTerm, page, size, sort);
-    getMemberResponseDtos.value = response.members;
+  const response: GetMemberPageResponseDto<GetMemberResponseDto> =
+      await getMemberSearchResult(searchTerm, page, size, sort);
+  getMemberResponseDtos.value = response.members;
 
-    updateTotalPages(response);
-  } catch (error) {
-    console.error('Error fetching members:', error);
-  }
+  updateTotalPages(response);
 };
 
 const onSearch = async (searchTerm: string) => {
@@ -105,7 +97,7 @@ const changeSort = async (sort: string) => {
 
 // pagenation
 const changePage = async (page: number) => {
-  if(search.value !== "") {
+  if (search.value !== "") {
     await fetchSearchData(search.value, page, requestedSize.value, requestedSort.value);
   } else {
     await fetchData(page);

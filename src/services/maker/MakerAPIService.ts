@@ -1,15 +1,14 @@
 import {getData} from "@/api/APISpec";
 import type {GetMakerResponseDto, GetMakerPageResponseDto} from "./MakerDto";
+import type {SuccessResponse} from "@/type/APIResponse";
 
 export const getMakers = async (page: number, size: number, sort: string)
     : Promise<GetMakerPageResponseDto<GetMakerResponseDto>> => {
     try {
-        const response
+        const response: SuccessResponse<GetMakerPageResponseDto<GetMakerResponseDto>>
             = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/api/makers?page=${page}&size=${size}&sort=${sort}`);
-        const getMakerPageResponseDto: GetMakerPageResponseDto<GetMakerResponseDto> = response.data;
-        return getMakerPageResponseDto;
+        return response.data;
     } catch (error) {
-        console.error(error);
         throw new Error('Failed to get maker');
     }
 }
@@ -17,12 +16,10 @@ export const getMakers = async (page: number, size: number, sort: string)
 export const getMakerSearchResult = async (query: string, page: number, size: number, sort: string)
     : Promise<GetMakerPageResponseDto<GetMakerResponseDto>> => {
     try {
-        const response
+        const response: SuccessResponse<GetMakerPageResponseDto<GetMakerResponseDto>>
             = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/api/makers/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
-        const getMakerPageResponseDto: GetMakerPageResponseDto<GetMakerResponseDto> = response.data;
-        return getMakerPageResponseDto;
+        return response.data;
     } catch (error) {
-        console.error(error);
         throw new Error('Failed to get maker');
     }
 }

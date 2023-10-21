@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, onBeforeMount } from 'vue';
+import {ref, onMounted, onBeforeMount} from 'vue';
 import {getProjects, getProjectSearchResult, authorizeProject} from '@/services/project/ProjectAPIService';
 import type {GetProjectResponseDto, GetProjectPageResponseDto} from '@/services/project/ProjectDto';
 import TableInfo from '@/components/TableView.vue';
@@ -51,15 +51,11 @@ const fetchData = async (
     page: number = requestedPage.value,
     size: number = requestedSize.value,
     sort: string = requestedSort.value) => {
-  try {
-    const response: GetProjectPageResponseDto<GetProjectResponseDto> =
-        await getProjects(page, size, sort);
-    getProjectResponseDtos.value = response.projects;
+  const response: GetProjectPageResponseDto<GetProjectResponseDto> =
+      await getProjects(page, size, sort);
+  getProjectResponseDtos.value = response.projects;
 
-    updateTotalPages(response);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-  }
+  updateTotalPages(response);
 };
 
 const fetchSearchData = async (
@@ -67,15 +63,11 @@ const fetchSearchData = async (
     page: number = requestedPage.value,
     size: number = requestedSize.value,
     sort: string = requestedSort.value) => {
-  try {
-    const response: GetProjectPageResponseDto<GetProjectResponseDto> =
-        await getProjectSearchResult(searchTerm, page, size, sort);
-    getProjectResponseDtos.value = response.projects;
+  const response: GetProjectPageResponseDto<GetProjectResponseDto> =
+      await getProjectSearchResult(searchTerm, page, size, sort);
+  getProjectResponseDtos.value = response.projects;
 
-    updateTotalPages(response);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-  }
+  updateTotalPages(response);
 };
 
 const onSearch = async (searchTerm: string) => {
@@ -97,7 +89,7 @@ const changeSort = async (sort: string) => {
 };
 
 const changePage = async (page: number) => {
-  if(search.value !== "") {
+  if (search.value !== "") {
     await fetchSearchData(search.value, page);
   } else {
     await fetchData(page);
@@ -109,7 +101,7 @@ const authProject = async (projectId: number) => {
   // 프로젝트 인증
   await authorizeProject(projectId);
   // 리렌더링
-  if(search.value !== "") {
+  if (search.value !== "") {
     await fetchSearchData(search.value);
   } else {
     await fetchData();
