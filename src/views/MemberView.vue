@@ -1,119 +1,118 @@
 <template>
-  <div class="info">
-    <div class="condition">
-      <SearchBar @search="onSearch"/>
-      <SortBar 
-        :sortOptions="sortOptions" 
-        :changeSort="changeSort" 
+  <div class="content-header">
+    <SearchComponent @search-request="onSearch"/>
+    <SortComponent
+        :sortOptions="sortOptions"
+        :changeSort="changeSort"
         :requestedSort="requestedSort"/>
-    </div>
-    <TableInfo 
-      :tableHeaders="tableHeaders"
-      :tableInfos="getMemberResponseDtos"
-      :tableProperties="tableProperties"/>
-    <PageNavBar 
-      :totalPages="totalPages"
-      :requestedPage="requestedPage"
-      :changePage="changePage"/>
+  </div>
+  <div class="content-body">
+    <TableComponent
+        :tableHeaders="tableHeaders"
+        :tableInfos="getMemberResponseDtos"
+        :tableProperties="tableProperties"/>
+    <PaginationComponent
+        :totalPages="totalPages"
+        :requestedPage="requestedPage"
+        :changePage="changePage"/>
   </div>
 </template>
 
+<!-- setup: 컴포넌트 API를 사용하기로 선언 -->
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { getMemberSearchResult, getMembers } from '@/services/member/MemberAPIService';
-  import type { GetMemberResponseDto, GetMemberPageResponseDto } from '@/services/member/MemberDto';
-  import TableInfo from '@/components/TableInfo.vue';
-  import SortBar from '@/components/SortBar.vue';
-  import SearchBar from '@/components/SearchBar.vue';
-  import PageNavBar from '@/components/PageNavBar.vue';
+import {ref, onBeforeMount} from 'vue';
+import {getMemberSearchResult, getMembers} from '@/services/member/MemberAPIService';
+import type {GetMemberResponseDto, GetMemberPageResponseDto} from '@/services/member/MemberDto';
+import TableComponent from '@/components/TableComponent.vue';
+import SortComponent from '@/components/SortComponent.vue';
+import SearchComponent from '@/components/SearchComponent.vue';
+import PaginationComponent from '@/components/PaginationComponent.vue';
 
-  // ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
-  const getMemberResponseDtos = ref<GetMemberResponseDto[]>([]);
-  const totalPages = ref<number>(1);
+// 검색 참조 값
+let search = ref<string>("");
 
-  const sortOptions = [
-    { label: '등록일순', value: 'createdAt,desc' },
-    { label: '이름순', value: 'memberName,desc' },
-  ];
+// 정렬 옵션
+const sortOptions = [
+  {label: '등록일순', value: 'createdAt,desc'},
+  {label: '이름순', value: 'memberName,desc'},
+];
 
-  // default pagenation 값 세팅
-  const requestedSort = ref<string>(sortOptions[0].value);
-  const requestedPage = ref<number>(0);
-  const requestedSize = ref<number>(20);
+// default pagenation 값 세팅
+// ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
+const requestedSort = ref<string>(sortOptions[0].value);
+const requestedPage = ref<number>(0);
+const requestedSize = ref<number>(10);
 
-  // 컴포넌트가 마운트 된 후 API 호출
-  onMounted(async () => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const page: number = Number(urlSearchParams.get("page")) || 0;
-    const size: number = Number(urlSearchParams.get("size")) || 20;
-    const sort: string = urlSearchParams.get("sort") || "createdAt,desc";
+// ref: 뷰에서 컴포넌트 또는 DOM에 접근하기 위해 사용하는 속성(마운트된 요소에만 적용 가능)
+const getMemberResponseDtos = ref<Array<GetMemberResponseDto>>(new Array<GetMemberResponseDto>());
+const totalPages = ref<number>(1);
 
-    // 회원 정보 조회
-    const response: GetMemberPageResponseDto<GetMemberResponseDto>  = await getMembers(page, size, sort);
-    getMemberResponseDtos.value = response.members;
+/**
+ * 컴포넌트가 마운트되기 전에 호출될 콜백
+ */
+onBeforeMount(async () => {
+  await fetchData();
+});
 
-    totalPages.value = response.totalPages;
-  });
+const fetchData = async (
+    page: number = requestedPage.value,
+    size: number = requestedSize.value,
+    sort: string = requestedSort.value) => {
+  const response: GetMemberPageResponseDto<GetMemberResponseDto> =
+      await getMembers(page, size, sort);
+  getMemberResponseDtos.value = response.members;
 
-  // 검색 이벤트
-  let search = ref<string>("");
-  const onSearch = async (searchTerm: string) => {
-    const response: GetMemberPageResponseDto<GetMemberResponseDto> = 
-      await getMemberSearchResult(searchTerm, requestedPage.value, requestedSize.value, requestedSort.value);
-    getMemberResponseDtos.value = response.members;
+  updateTotalPages(response);
+};
 
-    // 검색값 다시 세팅
-    search.value = searchTerm;
+const fetchSearchData = async (
+    searchTerm: string = "",
+    page: number = requestedPage.value,
+    size: number = requestedSize.value,
+    sort: string = requestedSort.value) => {
+  const response: GetMemberPageResponseDto<GetMemberResponseDto> =
+      await getMemberSearchResult(searchTerm, page, size, sort);
+  getMemberResponseDtos.value = response.members;
 
-    // 총 페이지 수 다시 계산
-    totalPages.value = response.totalPages;
+  updateTotalPages(response);
+};
+
+const onSearch = async (searchTerm: string) => {
+  if (searchTerm !== "") {
+    await fetchSearchData(searchTerm);
+  } else {
+    await fetchData();
   }
+  search.value = searchTerm;
+};
 
-  const changePage = async (page: number) => {
-    requestedPage.value = page;
-    // 회원 정보 조회
-    const response: GetMemberPageResponseDto<GetMemberResponseDto> = 
-      await getMemberSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
-    getMemberResponseDtos.value = response.members;
-
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set("page", (page).toString());
-
-    const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
-    history.pushState(null, '', newUrl);
+const changeSort = async (sort: string) => {
+  if (search.value !== "") {
+    await fetchSearchData(search.value, requestedPage.value, requestedSize.value, sort);
+  } else {
+    await fetchData(requestedPage.value, requestedSize.value, sort);
   }
+  requestedSort.value = sort;
+};
 
-  // 정렬기준 업데이트 함수
-  const changeSort = async (sort: string) => {
-    try {
-      requestedSort.value = sort;
+// pagenation
+const changePage = async (page: number) => {
+  if (search.value !== "") {
+    await fetchSearchData(search.value, page, requestedSize.value, requestedSort.value);
+  } else {
+    await fetchData(page);
+  }
+  requestedPage.value = page;
+}
 
-      // 회원 정보 조회
-      const response: GetMemberPageResponseDto<GetMemberResponseDto> = 
-        await getMemberSearchResult(search.value, requestedPage.value, requestedSize.value, requestedSort.value);
-      getMemberResponseDtos.value = response.members;
+// 총 페이지 수 다시 계산
+const updateTotalPages = (response: GetMemberPageResponseDto<GetMemberResponseDto>) => {
+  totalPages.value = response.totalPages;
+}
 
-      
-      // 총 페이지 수 다시 계산
-      totalPages.value = response.totalPages;
-
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      urlSearchParams.set("sort", sort);
-
-      const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
-      history.pushState(null, '', newUrl);
-    } catch (error) {
-      console.error('Error fetching members:', error);
-    }
-  };
-
-  const tableHeaders = ["이름", "이메일", "전화번호", "등록일"];
-  const tableProperties = ["memberName", "memberEmail", "memberPhoneNumber", "createdAt"];
+const tableHeaders = ["이름", "이메일", "전화번호", "등록일"];
+const tableProperties = ["memberName", "memberEmail", "memberPhoneNumber", "createdAt"];
 </script>
 
 <style>
-@import "../assets/css/info.css";
-@import "../assets/css/conditionbar.css";
-@import "../assets/css/tableview.css";
-@import "../assets/css/pagenavbar.css";
 </style>
