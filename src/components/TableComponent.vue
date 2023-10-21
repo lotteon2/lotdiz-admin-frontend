@@ -34,7 +34,7 @@ defineProps({
   },
   authorizeProject: {
     Type: Function,
-    required: true
+    required: false
   }
 });
 </script>
