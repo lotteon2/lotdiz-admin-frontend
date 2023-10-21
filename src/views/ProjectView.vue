@@ -23,10 +23,10 @@
 import {ref, onBeforeMount} from 'vue';
 import {getProjects, getProjectSearchResult, authorizeProject} from '@/services/project/ProjectAPIService';
 import type {GetProjectResponseDto, GetProjectPageResponseDto} from '@/services/project/ProjectDto';
-import TableInfo from '@/components/TableView.vue';
-import SortBar from '@/components/Sort.vue';
-import SearchBar from '@/components/Search.vue';
-import PageNavBar from '@/components/PageNavbar.vue';
+import TableInfo from '@/components/TableComponent.vue';
+import SortBar from '@/components/SortComponent.vue';
+import SearchBar from '@/components/SearchComponent.vue';
+import PageNavBar from '@/components/PagenationComponent.vue';
 
 let search = ref<string>("");
 

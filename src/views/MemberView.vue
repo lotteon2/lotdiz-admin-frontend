@@ -23,10 +23,10 @@
 import {ref, onBeforeMount} from 'vue';
 import {getMemberSearchResult, getMembers} from '@/services/member/MemberAPIService';
 import type {GetMemberResponseDto, GetMemberPageResponseDto} from '@/services/member/MemberDto';
-import TableInfo from '@/components/TableView.vue';
-import SortBar from '@/components/Sort.vue';
-import SearchBar from '@/components/Search.vue';
-import PageNavBar from '@/components/PageNavbar.vue';
+import TableInfo from '@/components/TableComponent.vue';
+import SortBar from '@/components/SortComponent.vue';
+import SearchBar from '@/components/SearchComponent.vue';
+import PageNavBar from '@/components/PagenationComponent.vue';
 
 // 검색 참조 값
 let search = ref<string>("");
