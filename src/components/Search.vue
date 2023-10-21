@@ -12,15 +12,18 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 const searchTerm = ref("");
-// emit 옵션을 사용하기 위해 search 이벤트 선언
-const emit = defineEmits(["search"]);
 
-// 부모에게 search 이벤트 발행
+// search-request 이벤트 선언
+const emit = defineEmits<{
+  (event: "search-request", searchTerm: string): void
+}>();
+
+// 부모에게 search-request 이벤트 발행
 const performSearch = () => {
-  emit("search", searchTerm.value);
+  emit("search-request", searchTerm.value);
 }
 </script>
 
