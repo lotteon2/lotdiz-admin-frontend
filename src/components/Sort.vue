@@ -3,22 +3,29 @@
     <div
         class="sort-option"
         v-for="sortOption in sortOptions"
-        :key="sortOption.value"
-        :class="{ 'selected': requestedSort === sortOption.value }">
-      <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
+        :key="sortOption"
+        :class="{ 'selected': requestedSort === sortOption['value'] }">
+      <a href="#" @click="changeSort(sortOption['value'])">{{ sortOption['label'] }}</a>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'SortBar',
-  props: {
-    sortOptions: Array,
-    requestedSort: String,
-    changeSort: Function
+<script setup lang="ts">
+
+defineProps({
+  sortOptions: {
+    Type: Array,
+    required: true
+  },
+  requestedSort: {
+    Type: String,
+    required: true
+  },
+  changeSort: {
+    Type: Function,
+    required: true
   }
-};
+});
 </script>
 
 <style scoped>

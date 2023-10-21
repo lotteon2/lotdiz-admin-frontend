@@ -9,7 +9,7 @@
         <button class="project-auth-btn" type="button" disabled>인증</button>
       </div>
       <div v-else-if="(property === 'projectIsAuthorized') && info[property] === false">
-        <button class="project-unauth-btn" type="button" @click="authorizeProject(info.projectId)">미인증</button>
+        <button class="project-unauth-btn" type="button" @click="authorizeProject(info['projectId'])">미인증</button>
       </div>
       <div v-else>{{ info[property] }}</div>
     </td>
@@ -17,16 +17,26 @@
   </table>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'TableInfo',
-  props: {
-    tableHeaders: Array<string>,
-    tableInfos: Array,
-    tableProperties: Array<string>,
-    authorizeProject: Function
+<script setup lang="ts">
+
+defineProps({
+  tableHeaders: {
+    Type: Array<string>,
+    required: true
+  },
+  tableInfos: {
+    Type: Array,
+    required: true
+  },
+  tableProperties: {
+    Type: Array<string>,
+    required: true
+  },
+  authorizeProject: {
+    Type: Function,
+    required: true
   }
-};
+});
 </script>
 
 <style scoped>

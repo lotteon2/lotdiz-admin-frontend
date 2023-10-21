@@ -32,15 +32,22 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'PageNavBar',
-  props: {
-    totalPages: Number,
-    requestedPage: Number,
-    changePage: Function
+<script setup lang="ts">
+
+defineProps({
+  totalPages: {
+    Type: Number,
+    required: true
+  },
+  requestedPage: {
+    Type: Number,
+    required: true
+  },
+  changePage: {
+    Type: Function,
+    required: true
   }
-};
+});
 </script>
 
 <style>
