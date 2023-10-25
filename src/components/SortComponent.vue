@@ -3,9 +3,9 @@
     <div
         class="sort-option"
         v-for="sortOption in sortOptions"
-        :key="sortOption"
-        :class="{ 'selected': requestedSort === sortOption['value'] }">
-      <a href="#" @click="changeSort(sortOption['value'])">{{ sortOption['label'] }}</a>
+        :key="sortOption.value"
+        :class="{ 'selected': requestedSort === sortOption.value }">
+      <a href="#" @click="changeSort(sortOption.value)">{{ sortOption.label }}</a>
     </div>
   </div>
 </template>
@@ -14,15 +14,15 @@
 
 defineProps({
   sortOptions: {
-    Type: Array,
+    type: Array as () => Array<{ value: string, label: string }>,
     required: true
   },
   requestedSort: {
-    Type: String,
+    type: String,
     required: true
   },
   changeSort: {
-    Type: Function,
+    type: Function,
     required: true
   }
 });
