@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/services/common/AuthStore";
+import {useAuthStore} from "@/services/common/AuthStore";
 import {ref} from "vue";
 
 interface SignInForm {
@@ -27,6 +27,7 @@ interface SignInForm {
 
 const username = ref<string>("");
 const password = ref<string>("");
+
 function onSubmit() {
   const authStore = useAuthStore();
   const signInForm: SignInForm = {

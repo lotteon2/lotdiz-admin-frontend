@@ -39,7 +39,7 @@ const props = defineProps({
 });
 
 const handleAuthorize = (projectId: string) => {
-  if(props.authorizeProject) {
+  if (props.authorizeProject) {
     props.authorizeProject(projectId);
   }
 }
