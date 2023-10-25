@@ -2,10 +2,9 @@ import {defineStore} from "pinia";
 import axios, {Axios} from "axios";
 import router from "@/router";
 
-const baseURL = import.meta.env.VITE_MEMBER_SERVICE_URL;
-
 const client: Axios = axios.create({
-    baseURL: baseURL,
+    // baseURL: import.meta.env.VITE_MEMBER_SERVICE_URL,
+    baseURL: "https://apigateway.lotteedu.com/member-service",
     headers: {
         'Content-Type': 'application/json',
     }
@@ -21,7 +20,7 @@ export const useAuthStore = defineStore({
     actions: {
         async login(username: string, password: string) {
             try {
-                const response = await client.post(`${baseURL}/api/sign-in`, {
+                const response = await client.post(`/api/sign-in`, {
                     username: username,
                     password: password
                 });
