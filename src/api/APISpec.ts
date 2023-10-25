@@ -16,7 +16,7 @@ export const getData = async <T>(url: string): Promise<SuccessResponse<T>> => {
             = await client.get<SuccessResponse<T>>(url);
         return response.data;
     } catch (error) {
-        if(error instanceof AxiosError) {
+        if (error instanceof AxiosError) {
             if (error.response) {
                 if (error.response.status >= 400) {
                     throw {
@@ -25,7 +25,7 @@ export const getData = async <T>(url: string): Promise<SuccessResponse<T>> => {
                         detail: error.response.data.detail
                     };
                 }
-                if(error.response.status < 500) {
+                if (error.response.status < 500) {
                     throw error;
                 }
             }
@@ -41,7 +41,7 @@ export const postData = async <T>(url: string, data?: any): Promise<SuccessRespo
             = await client.post<SuccessResponse<T>>(url, data);
         return response.data;
     } catch (error) {
-        if(error instanceof AxiosError) {
+        if (error instanceof AxiosError) {
             if (error.response) {
                 if (error.response.status >= 400) {
                     throw {
@@ -50,7 +50,7 @@ export const postData = async <T>(url: string, data?: any): Promise<SuccessRespo
                         detail: error.response.data.detail
                     };
                 }
-                if(error.response.status < 500) {
+                if (error.response.status < 500) {
                     throw error;
                 }
             }

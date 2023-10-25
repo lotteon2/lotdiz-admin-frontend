@@ -1,6 +1,6 @@
 <template>
   <div v-if="!accessToken" v-show="!accessToken">
-    <SignInComponent />
+    <SignInComponent/>
   </div>
   <div v-else>
     <div class="container">
