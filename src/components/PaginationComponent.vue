@@ -36,15 +36,15 @@
 
 defineProps({
   totalPages: {
-    Type: Number,
+    type: Number,
     required: true
   },
   requestedPage: {
-    Type: Number,
+    type: Number,
     required: true
   },
   changePage: {
-    Type: Function,
+    type: Function,
     required: true
   }
 });
