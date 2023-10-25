@@ -1,0 +1,94 @@
+.sidebar {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
+    border-radius: 5px;
+    border: 1px solid #CDCDCD;
+    background: #FFF;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+
+    width: 100%;
+    height: 80px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: #F00;
+    text-align: center;
+    font-family: Open Sans;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+}
+
+.router-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 15px 30px;
+    gap: 20px;
+    /* 부모의 가로길이에 딱 맞게 쭉 펼침 */
+    align-self: stretch;
+
+    text-decoration: none;
+    background: #FFF;
+}
+
+.router-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 25px;
+    height: 25px;
+    fill: #696CFF;
+}
+
+.router-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+
+    color: #828F9B;
+    text-align: right;
+    font-family: Open Sans;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+}
+
+.router-link.active-link {
+    border-radius: 5px;
+    border: 1px solid #696CFF;
+    background: #E7E7FF;
+}
+
+.active-link * {
+    color: #696CFF;
+}
