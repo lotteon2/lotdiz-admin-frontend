@@ -7,7 +7,7 @@ export const getProjects = async (page: number, size: number, sort: string)
     try {
         const response: SuccessResponse<GetProjectPageResponseDto<GetProjectResponseDto>>
             = await getData<GetProjectPageResponseDto<GetProjectResponseDto>>(
-            `/api/projects?page=${page}&size=${size}&sort=${sort}`);
+            `/admin-service/api/projects?page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get project');
@@ -19,7 +19,7 @@ export const getProjectSearchResult = async (query: string, page: number, size: 
     try {
         const response: SuccessResponse<GetProjectPageResponseDto<GetProjectResponseDto>>
             = await getData<GetProjectPageResponseDto<GetProjectSearchResponseDto>>(
-            `/api/projects/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+            `/admin-service/api/projects/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get project');
@@ -28,7 +28,7 @@ export const getProjectSearchResult = async (query: string, page: number, size: 
 
 export const authorizeProject = async (projectId: number): Promise<void> => {
     try {
-        await postData(`/api/projects/${projectId}/auth`);
+        await postData(`/admin-service/api/projects/${projectId}/auth`);
     } catch (error) {
         throw new Error('Failed to auth project');
     }

@@ -6,7 +6,7 @@ export const getMakers = async (page: number, size: number, sort: string)
     : Promise<GetMakerPageResponseDto<GetMakerResponseDto>> => {
     try {
         const response: SuccessResponse<GetMakerPageResponseDto<GetMakerResponseDto>>
-            = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/api/makers?page=${page}&size=${size}&sort=${sort}`);
+            = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/admin-service/api/makers?page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get maker');
@@ -17,7 +17,7 @@ export const getMakerSearchResult = async (query: string, page: number, size: nu
     : Promise<GetMakerPageResponseDto<GetMakerResponseDto>> => {
     try {
         const response: SuccessResponse<GetMakerPageResponseDto<GetMakerResponseDto>>
-            = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/api/makers/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+            = await getData<GetMakerPageResponseDto<GetMakerResponseDto>>(`/admin-service/api/makers/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get maker');

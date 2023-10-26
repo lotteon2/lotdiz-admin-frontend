@@ -1,26 +1,17 @@
 import {defineStore} from "pinia";
-import axios, {Axios} from "axios";
 import router from "@/router";
-
-const client: Axios = axios.create({
-    // baseURL: import.meta.env.VITE_MEMBER_SERVICE_URL,
-    baseURL: "https://apigateway.lotteedu.com/member-service",
-    headers: {
-        'Content-Type': 'application/json',
-    }
-});
+import {client} from "@/api/APISpec";
 
 export const useAuthStore = defineStore({
     id: "auth",
     state: () => ({
-        // initialize state from local storage to enable user to stay logged in
-        accessToken: localStorage.getItem("accessToken"),
+        accessToken: sessionStorage.getItem("accessToken"),
         returnUrl: null
     }),
     actions: {
         async login(username: string, password: string) {
             try {
-                const response = await client.post(`/api/sign-in`, {
+                const response = await client.post(`/member-service/api/sign-in`, {
                     username: username,
                     password: password
                 });
@@ -31,7 +22,7 @@ export const useAuthStore = defineStore({
                 this.accessToken = accessToken;
 
                 // store user details and jwt in local storage to keep user logged in between page refreshes
-                localStorage.setItem("accessToken", accessToken);
+                sessionStorage.setItem("accessToken", accessToken);
 
                 // redirect to previous url or default to home page
                 await router.push(this.returnUrl || '/');
@@ -39,11 +30,6 @@ export const useAuthStore = defineStore({
                 console.error(error);
                 throw error;
             }
-        },
-        logout() {
-            this.accessToken = null;
-            localStorage.removeItem("accessToken");
-            router.push("/login");
         }
     }
 });

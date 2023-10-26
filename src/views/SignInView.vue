@@ -7,7 +7,7 @@
       </div>
       <div class="signin-form-group">
         <div class="signin-form-password-label">비밀번호</div>
-        <input class="signin-form-password" type="password" :ref="password" v-model="password"/>
+        <input class="signin-form-password" type="password" @keyup.enter="onSubmit" :ref="password" v-model="password"/>
       </div>
       <div class="signin-form-submit-group">
         <input class="signin-form-submit" type="submit" @click="onSubmit" value="로그인"/>

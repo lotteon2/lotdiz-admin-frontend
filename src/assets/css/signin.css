@@ -28,7 +28,7 @@
     width: 100%;
     height: 100%;
 
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .signin-form-submit-group {
@@ -43,6 +43,8 @@
 .signin-form-username-label, .signin-form-password-label {
     font-size: 20px;
     font-weight: 500;
+
+    margin-bottom: 5px;
 }
 
 .signin-form-username, .signin-form-password {
@@ -58,12 +60,22 @@
 
     font-size: 15px;
     color: white;
-    background: #127bff;
+    background: #696CFF;
+
+    padding: 5px;
 
     border-radius: 3px;
-    border: 0.1px solid #127bff;
+    border: 0.1px solid #696CFF;
 }
 
 .signin-form-submit:hover {
     cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+
+    border-radius: 3px;
+    border: 1px solid #696CFF;
+    border-color: #696CFF;
 }

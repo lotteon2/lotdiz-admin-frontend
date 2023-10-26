@@ -2,12 +2,10 @@ import axios, {Axios, AxiosError, type AxiosResponse} from "axios";
 import type {SuccessResponse} from "@/type/APIResponse";
 
 // axios 인스턴스 생성
-const client: Axios = axios.create({
-    // baseURL: import.meta.env.VITE_ADMIN_SERVICE_URL,
-    baseURL: "https://apigateway.lotteedu.com/admin-service",
+export const client: Axios = axios.create({
+    baseURL: import.meta.env.VITE_SERVICE_URL,
     headers: {
-        'Content-Type': 'application/json',
-        "Authorization": localStorage.getItem("accessToken")
+        'Content-Type': 'application/json'
     }
 });
 
