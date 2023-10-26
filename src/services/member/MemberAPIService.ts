@@ -7,7 +7,7 @@ export const getMembers = async (page: number, size: number, sort: string)
     try {
         const response: SuccessResponse<GetMemberPageResponseDto<GetMemberResponseDto>>
             = await getData<GetMemberPageResponseDto<GetMemberResponseDto>>(
-            `/api/members?page=${page}&size=${size}&sort=${sort}`);
+            `/admin-service/api/members?page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get member');
@@ -19,7 +19,7 @@ export const getMemberSearchResult = async (query: string, page: number, size: n
     try {
         const response: SuccessResponse<GetMemberPageResponseDto<GetMemberResponseDto>>
             = await getData<GetMemberPageResponseDto<GetMemberResponseDto>>(
-            `/api/members/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
+            `/admin-service/api/members/search?query=${query}&page=${page}&size=${size}&sort=${sort}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to get member');
