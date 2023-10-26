@@ -3,8 +3,7 @@ import axios, {Axios} from "axios";
 import router from "@/router";
 
 const client: Axios = axios.create({
-    // baseURL: import.meta.env.VITE_MEMBER_SERVICE_URL,
-    baseURL: "https://apigateway.lotteedu.com/member-service",
+    baseURL: import.meta.env.VITE_MEMBER_SERVICE_URL,
     headers: {
         'Content-Type': 'application/json',
     }
