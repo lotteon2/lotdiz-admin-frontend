@@ -4,6 +4,7 @@ import type {SuccessResponse} from "@/type/APIResponse";
 // axios 인스턴스 생성
 export const client: Axios = axios.create({
     baseURL: import.meta.env.VITE_SERVICE_URL,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
