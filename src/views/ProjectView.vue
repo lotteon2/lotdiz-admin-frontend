@@ -112,7 +112,7 @@ const updateTotalPages = (response: GetProjectPageResponseDto<GetProjectResponse
   totalPages.value = response.totalPages;
 }
 
-const tableHeaders = ["프로젝트명", "카테고리", "메이커명", "남은 기간", "인증 상태", "등록일"];
+const tableHeaders = ["프로젝트명", "카테고리", "메이커명", "마감일", "인증 상태", "등록일"];
 const tableProperties = ["projectName", "categoryName", "makerName", "projectDueDate", "projectIsAuthorized", "createdAt"];
 </script>
 
